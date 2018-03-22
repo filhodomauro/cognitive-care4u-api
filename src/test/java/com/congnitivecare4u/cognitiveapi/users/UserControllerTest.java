@@ -68,8 +68,8 @@ public class UserControllerTest {
         this.mockMvc.perform(
                 post("/users")
                     .content(this.json(new User(null, "test user saved", "test@test.com")))
-                    .contentType(contentType)
-                    .accept(contentType)
+                    .contentType(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
             )
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("location"));

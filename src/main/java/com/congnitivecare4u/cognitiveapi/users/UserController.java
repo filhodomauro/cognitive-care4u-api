@@ -8,6 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -16,9 +17,14 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping
-    List<User> get(){
-        return userRepository.findAll();
+    @GetMapping("/:id")
+    User get(@PathVariable String id){
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new RuntimeException();
+        }
     }
 
     @PostMapping
