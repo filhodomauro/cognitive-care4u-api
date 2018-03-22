@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.http.MockHttpOutputMessage;
@@ -15,12 +16,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 
@@ -28,6 +30,10 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @SpringBootTest(classes = CognitiveApiApplication.class)
 @WebAppConfiguration
 public class UserControllerTest {
+
+    private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+            MediaType.APPLICATION_JSON.getSubtype(),
+            Charset.forName("utf8"));
 
     private MockMvc mockMvc;
 
@@ -62,18 +68,17 @@ public class UserControllerTest {
         this.mockMvc.perform(
                 post("/users")
                     .content(this.json(new User(null, "test user saved", "test@test.com")))
-                    .contentType(APPLICATION_JSON_UTF8)
+                    .contentType(contentType)
+                    .accept(contentType)
             )
-                .andExpect(status().isCreated());
-               // .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                //.andExpect(jsonPath("$.location", is("test user saved"))
-        //);
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("location"));
     }
 
     protected String json(Object o) throws IOException {
         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
         this.mappingJackson2HttpMessageConverter.write(
-                o, APPLICATION_JSON_UTF8, mockHttpOutputMessage);
+                o, APPLICATION_JSON, mockHttpOutputMessage);
         return mockHttpOutputMessage.getBodyAsString();
     }
 }

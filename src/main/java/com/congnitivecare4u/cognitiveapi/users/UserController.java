@@ -7,6 +7,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -15,13 +16,12 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping()
-    User get(){
-        User user = new User(null, "test user", "test_user@test.com");
-        return user;
+    @GetMapping
+    List<User> get(){
+        return userRepository.findAll();
     }
 
-    @PostMapping()
+    @PostMapping
     ResponseEntity<?> create(@RequestBody @Valid User user) {
 
         User persistentUser = userRepository.save(user);

@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import java.io.IOException;
 
 @Configuration
-@Profile("test")
+@Profile({"test"})
 public class TestMongoConfig {
 
     private static final String MONGO_DB_URL = "localhost";
