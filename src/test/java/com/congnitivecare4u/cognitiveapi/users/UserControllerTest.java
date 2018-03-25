@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -72,7 +73,34 @@ public class UserControllerTest {
                     .accept(APPLICATION_JSON)
             )
                 .andExpect(status().isCreated())
-                .andExpect(header().exists("location"));
+                .andExpect(header().exists("location"))
+                .andExpect(header().string("location", startsWith("http://localhost/users/")));
+    }
+
+    @Test
+    public void testThatUserIsNotFound() throws Exception {
+        this.mockMvc.perform(
+                get("/users/rfrfrfdfdsd")
+        ).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testThatUserIsFound() throws Exception {
+        String location =
+                this.mockMvc.perform(
+                post("/users")
+                        .content(this.json(new User(null, "testThatUserIsFound", "test@test.com")))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+        .andReturn().getResponse().getHeader("location");
+
+        String userId = location.substring(location.lastIndexOf("/") + 1);
+        System.out.println("userId:" + userId);
+        this.mockMvc.perform(
+                get("/users/" + userId)
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("testThatUserIsFound")));
     }
 
     protected String json(Object o) throws IOException {
