@@ -103,6 +103,19 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.name", is("testThatUserIsFound")));
     }
 
+    @Test
+    public void testThatUserIsRejectWithInvalidData() throws Exception {
+        this.mockMvc.perform(
+                post("/users")
+                        .content(this.json(new User(null, null, "testtest.com")))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+        ).andExpect(status().isUnprocessableEntity())
+        .andExpect(jsonPath("$", hasSize(2)))
+        .andExpect(jsonPath("$[*].field", containsInAnyOrder("name", "email")))
+        .andExpect(jsonPath("$[*].errorMessage", containsInAnyOrder("must not be blank","must be a well-formed email address")));
+    }
+
     protected String json(Object o) throws IOException {
         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
         this.mappingJackson2HttpMessageConverter.write(
