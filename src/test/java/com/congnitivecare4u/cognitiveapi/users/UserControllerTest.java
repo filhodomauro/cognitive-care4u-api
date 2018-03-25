@@ -6,22 +6,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 
+import static com.congnitivecare4u.cognitiveapi.TestHelper.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -32,13 +28,9 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WebAppConfiguration
 public class UserControllerTest {
 
-    private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-            MediaType.APPLICATION_JSON.getSubtype(),
-            Charset.forName("utf8"));
-
     private MockMvc mockMvc;
 
-    private HttpMessageConverter mappingJackson2HttpMessageConverter;
+    private HttpMessageConverter converter;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -55,22 +47,22 @@ public class UserControllerTest {
     @Autowired
     public void setConverters(HttpMessageConverter<?>[] converters) {
 
-        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream()
+        this.converter = Arrays.asList(converters).stream()
                 .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
                 .findAny()
                 .orElse(null);
 
         assertNotNull("the JSON message converter must not be null",
-                this.mappingJackson2HttpMessageConverter);
+                this.converter);
     }
 
     @Test
     public void testThatUserIsSaved() throws Exception {
         this.mockMvc.perform(
                 post("/users")
-                    .content(this.json(new User(null, "test user saved", "test@test.com")))
-                    .contentType(APPLICATION_JSON)
-                    .accept(APPLICATION_JSON)
+                    .content(toJson(new User(null, "test user saved", "test@test.com"), this.converter))
+                    .contentType(JSON_CONTENT_TYPE)
+                    .accept(JSON_CONTENT_TYPE)
             )
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("location"))
@@ -89,9 +81,9 @@ public class UserControllerTest {
         String location =
                 this.mockMvc.perform(
                 post("/users")
-                        .content(this.json(new User(null, "testThatUserIsFound", "test@test.com")))
-                        .contentType(APPLICATION_JSON)
-                        .accept(APPLICATION_JSON)
+                        .content(toJson(new User(null, "testThatUserIsFound", "test@test.com"), converter))
+                        .contentType(JSON_CONTENT_TYPE)
+                        .accept(JSON_CONTENT_TYPE)
         ).andExpect(status().isCreated())
         .andReturn().getResponse().getHeader("location");
 
@@ -107,19 +99,12 @@ public class UserControllerTest {
     public void testThatUserIsRejectWithInvalidData() throws Exception {
         this.mockMvc.perform(
                 post("/users")
-                        .content(this.json(new User(null, null, "testtest.com")))
-                        .contentType(APPLICATION_JSON)
-                        .accept(APPLICATION_JSON)
+                        .content(toJson(new User(null, null, "testtest.com"), converter))
+                        .contentType(JSON_CONTENT_TYPE)
+                        .accept(JSON_CONTENT_TYPE)
         ).andExpect(status().isUnprocessableEntity())
         .andExpect(jsonPath("$", hasSize(2)))
         .andExpect(jsonPath("$[*].field", containsInAnyOrder("name", "email")))
         .andExpect(jsonPath("$[*].errorMessage", containsInAnyOrder("must not be blank","must be a well-formed email address")));
-    }
-
-    protected String json(Object o) throws IOException {
-        MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
-        this.mappingJackson2HttpMessageConverter.write(
-                o, APPLICATION_JSON, mockHttpOutputMessage);
-        return mockHttpOutputMessage.getBodyAsString();
     }
 }
