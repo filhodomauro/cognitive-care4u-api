@@ -47,10 +47,7 @@ public class UserControllerTest {
     @Autowired
     public void setConverters(HttpMessageConverter<?>[] converters) {
 
-        this.converter = Arrays.asList(converters).stream()
-                .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
-                .findAny()
-                .orElse(null);
+        this.converter = findConverter(converters);
 
         assertNotNull("the JSON message converter must not be null",
                 this.converter);
