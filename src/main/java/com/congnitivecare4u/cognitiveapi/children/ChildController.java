@@ -1,8 +1,9 @@
 package com.congnitivecare4u.cognitiveapi.children;
 
+import com.congnitivecare4u.cognitiveapi.FieldError;
 import com.congnitivecare4u.cognitiveapi.exceptions.NotFoundException;
 import com.congnitivecare4u.cognitiveapi.exceptions.UnprocessableEntityException;
-import com.congnitivecare4u.cognitiveapi.users.User;
+import com.congnitivecare4u.cognitiveapi.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,9 @@ public class ChildController {
     @Autowired
     public ChildRepository childRepository;
 
+    @Autowired
+    public UserRepository userRepository;
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     Child get(@PathVariable String id){
@@ -38,6 +42,12 @@ public class ChildController {
         if (bindingResult.hasErrors()) {
             throw new UnprocessableEntityException("Error to save child", bindingResult.getFieldErrors());
         }
+
+        child.getParentUsersId().forEach(parentUserId -> {
+            if (!isValidParentUser(parentUserId)) {
+                throw new UnprocessableEntityException("Error to save child", FieldError.of("parentUserId", parentUserId));
+            }
+        });
         Child persistentChild = childRepository.save(child);
 
         URI location = ServletUriComponentsBuilder
@@ -45,6 +55,10 @@ public class ChildController {
                 .buildAndExpand(persistentChild.getId()).toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    private boolean isValidParentUser(String parentUserId) {
+        return userRepository.findById(parentUserId).isPresent();
     }
 
 }
