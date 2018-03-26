@@ -7,13 +7,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Arrays;
 
 import static com.congnitivecare4u.cognitiveapi.TestHelper.*;
 import static org.hamcrest.Matchers.*;
@@ -85,7 +82,6 @@ public class UserControllerTest {
         .andReturn().getResponse().getHeader("location");
 
         String userId = location.substring(location.lastIndexOf("/") + 1);
-        System.out.println("userId:" + userId);
         this.mockMvc.perform(
                 get("/users/" + userId)
         ).andExpect(status().isOk())
