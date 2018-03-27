@@ -1,8 +1,8 @@
-package com.congnitivecare4u.cognitiveapi.children;
+package com.cognitivecare4u.cognitiveapi.children;
 
-import com.congnitivecare4u.cognitiveapi.CognitiveApiApplication;
-import com.congnitivecare4u.cognitiveapi.users.User;
-import com.congnitivecare4u.cognitiveapi.users.UserRepository;
+import com.cognitivecare4u.cognitiveapi.CognitiveApiApplication;
+import com.cognitivecare4u.cognitiveapi.users.User;
+import com.cognitivecare4u.cognitiveapi.users.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Arrays;
 
-import static com.congnitivecare4u.cognitiveapi.TestHelper.*;
+import static com.cognitivecare4u.cognitiveapi.TestHelper.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

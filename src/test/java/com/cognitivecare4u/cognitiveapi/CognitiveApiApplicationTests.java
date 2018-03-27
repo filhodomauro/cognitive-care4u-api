@@ -1,4 +1,4 @@
-package com.congnitivecare4u.cognitiveapi;
+package com.cognitivecare4u.cognitiveapi;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

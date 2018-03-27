@@ -1,15 +1,16 @@
-package com.congnitivecare4u.cognitiveapi.users;
+package com.cognitivecare4u.cognitiveapi.children;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class User {
+public class Child {
 
     @Id
     private String id;
@@ -17,7 +18,6 @@ public class User {
     @NotBlank
     private String name;
 
-    @Email
-    @NotBlank
-    private String email;
+    @NotEmpty
+    private List<String> parentUsersId;
 }

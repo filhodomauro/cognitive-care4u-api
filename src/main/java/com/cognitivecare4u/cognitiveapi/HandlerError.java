@@ -1,7 +1,7 @@
-package com.congnitivecare4u.cognitiveapi;
+package com.cognitivecare4u.cognitiveapi;
 
-import com.congnitivecare4u.cognitiveapi.exceptions.NotFoundException;
-import com.congnitivecare4u.cognitiveapi.exceptions.UnprocessableEntityException;
+import com.cognitivecare4u.cognitiveapi.exceptions.UnprocessableEntityException;
+import com.cognitivecare4u.cognitiveapi.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

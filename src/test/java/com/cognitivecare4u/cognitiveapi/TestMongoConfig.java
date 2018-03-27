@@ -1,4 +1,4 @@
-package com.congnitivecare4u.cognitiveapi;
+package com.cognitivecare4u.cognitiveapi;
 
 import com.mongodb.MongoClient;
 import cz.jirutka.spring.embedmongo.EmbeddedMongoFactoryBean;

@@ -1,6 +1,6 @@
-package com.congnitivecare4u.cognitiveapi.users;
+package com.cognitivecare4u.cognitiveapi.users;
 
-import com.congnitivecare4u.cognitiveapi.CognitiveApiApplication;
+import com.cognitivecare4u.cognitiveapi.CognitiveApiApplication;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +12,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import static com.congnitivecare4u.cognitiveapi.TestHelper.*;
+import static com.cognitivecare4u.cognitiveapi.TestHelper.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

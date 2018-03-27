@@ -1,4 +1,4 @@
-package com.congnitivecare4u.cognitiveapi.exceptions;
+package com.cognitivecare4u.cognitiveapi.exceptions;
 
 public class NotFoundException extends RuntimeException {
 }

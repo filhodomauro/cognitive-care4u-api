@@ -1,4 +1,4 @@
-package com.congnitivecare4u.cognitiveapi;
+package com.cognitivecare4u.cognitiveapi;
 
 import java.io.Serializable;
 

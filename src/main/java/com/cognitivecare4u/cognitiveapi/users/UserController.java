@@ -1,10 +1,9 @@
-package com.congnitivecare4u.cognitiveapi.users;
+package com.cognitivecare4u.cognitiveapi.users;
 
-import com.congnitivecare4u.cognitiveapi.exceptions.NotFoundException;
-import com.congnitivecare4u.cognitiveapi.exceptions.UnprocessableEntityException;
+import com.cognitivecare4u.cognitiveapi.exceptions.UnprocessableEntityException;
+import com.cognitivecare4u.cognitiveapi.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -12,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j

@@ -1,9 +1,9 @@
-package com.congnitivecare4u.cognitiveapi.children;
+package com.cognitivecare4u.cognitiveapi.children;
 
-import com.congnitivecare4u.cognitiveapi.FieldError;
-import com.congnitivecare4u.cognitiveapi.exceptions.NotFoundException;
-import com.congnitivecare4u.cognitiveapi.exceptions.UnprocessableEntityException;
-import com.congnitivecare4u.cognitiveapi.users.UserRepository;
+import com.cognitivecare4u.cognitiveapi.FieldError;
+import com.cognitivecare4u.cognitiveapi.exceptions.NotFoundException;
+import com.cognitivecare4u.cognitiveapi.exceptions.UnprocessableEntityException;
+import com.cognitivecare4u.cognitiveapi.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,8 @@
-package com.congnitivecare4u.cognitiveapi.children;
+package com.cognitivecare4u.cognitiveapi.users;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ChildRepository extends MongoRepository<Child, String>{
+public interface UserRepository extends MongoRepository<User, String> {
 }

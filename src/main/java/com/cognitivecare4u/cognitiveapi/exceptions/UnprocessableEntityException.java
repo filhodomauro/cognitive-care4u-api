@@ -1,7 +1,7 @@
-package com.congnitivecare4u.cognitiveapi.exceptions;
+package com.cognitivecare4u.cognitiveapi.exceptions;
 
 
-import com.congnitivecare4u.cognitiveapi.FieldError;
+import com.cognitivecare4u.cognitiveapi.FieldError;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.congnitivecare4u.cognitiveapi;
+package com.cognitivecare4u.cognitiveapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

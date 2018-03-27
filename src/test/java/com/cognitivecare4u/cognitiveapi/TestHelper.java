@@ -1,4 +1,4 @@
-package com.congnitivecare4u.cognitiveapi;
+package com.cognitivecare4u.cognitiveapi;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
