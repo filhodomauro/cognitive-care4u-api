@@ -1,6 +1,8 @@
 package com.congnitivecare4u.cognitiveapi.children;
 
 import com.congnitivecare4u.cognitiveapi.CognitiveApiApplication;
+import com.congnitivecare4u.cognitiveapi.users.User;
+import com.congnitivecare4u.cognitiveapi.users.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,9 +35,17 @@ public class ChildControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    @Autowired
+    private ChildRepository childRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Before
     public void setup(){
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
+        childRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Autowired
@@ -49,13 +59,28 @@ public class ChildControllerTest {
 
     @Test
     public void testThatAChildIsCreated() throws Exception {
+        String parentId = getNewParentId();
+
         this.mockMvc.perform(
                 post("/children")
-                        .content(toJson(new Child(null, "test child saved", Arrays.asList("iuyuiuiy")), this.converter))
+                        .content(toJson(new Child(null, "test child saved", Arrays.asList(parentId)), this.converter))
                         .contentType(JSON_CONTENT_TYPE)
                         .accept(JSON_CONTENT_TYPE)
         ).andExpect(status().isCreated())
         .andExpect(header().exists("location"))
         .andExpect(header().string("location", startsWith("http://localhost/children/")));
+    }
+
+    private String getNewParentId() throws Exception {
+        String location =
+                this.mockMvc.perform(
+                        post("/users")
+                                .content(toJson(new User(null, "getNewParentId", "parent@child.com"), converter))
+                                .contentType(JSON_CONTENT_TYPE)
+                                .accept(JSON_CONTENT_TYPE)
+                ).andExpect(status().isCreated())
+                        .andReturn().getResponse().getHeader("location");
+
+        return location.substring(location.lastIndexOf("/") + 1);
     }
 }

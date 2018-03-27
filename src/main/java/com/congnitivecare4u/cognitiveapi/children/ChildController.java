@@ -45,7 +45,7 @@ public class ChildController {
 
         child.getParentUsersId().forEach(parentUserId -> {
             if (!isValidParentUser(parentUserId)) {
-                throw new UnprocessableEntityException("Error to save child", FieldError.of("parentUserId", parentUserId));
+                throw new UnprocessableEntityException("Error to save child", FieldError.of("parentUserId", "invalid parent user id"));
             }
         });
         Child persistentChild = childRepository.save(child);
