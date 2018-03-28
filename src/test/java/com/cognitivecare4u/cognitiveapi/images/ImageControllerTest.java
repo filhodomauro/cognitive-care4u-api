@@ -1,6 +1,8 @@
-package com.cognitivecare4u.cognitiveapi.children;
+package com.cognitivecare4u.cognitiveapi.images;
 
 import com.cognitivecare4u.cognitiveapi.CognitiveApiApplication;
+import com.cognitivecare4u.cognitiveapi.children.Child;
+import com.cognitivecare4u.cognitiveapi.children.ChildRepository;
 import com.cognitivecare4u.cognitiveapi.users.User;
 import com.cognitivecare4u.cognitiveapi.users.UserRepository;
 import org.junit.Before;
@@ -9,25 +11,29 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.nio.file.Files;
 import java.util.Arrays;
 
-import static com.cognitivecare4u.cognitiveapi.TestHelper.*;
-import static org.hamcrest.Matchers.startsWith;
+import static com.cognitivecare4u.cognitiveapi.TestHelper.JSON_CONTENT_TYPE;
+import static com.cognitivecare4u.cognitiveapi.TestHelper.findConverter;
+import static com.cognitivecare4u.cognitiveapi.TestHelper.toJson;
 import static org.junit.Assert.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CognitiveApiApplication.class)
 @WebAppConfiguration
-public class ChildControllerTest {
+public class ImageControllerTest {
 
     private MockMvc mockMvc;
 
@@ -59,17 +65,20 @@ public class ChildControllerTest {
     }
 
     @Test
-    public void testThatAChildIsCreated() throws Exception {
+    public void testThatAnImageIsUpload() throws Exception {
         String parentId = getNewParentId();
-
-        this.mockMvc.perform(
-                post("/children")
-                        .content(toJson(new Child("test child saved", Arrays.asList(parentId)), this.converter))
-                        .contentType(JSON_CONTENT_TYPE)
-                        .accept(JSON_CONTENT_TYPE)
-        ).andExpect(status().isCreated())
-        .andExpect(header().exists("location"))
-        .andExpect(header().string("location", startsWith("http://localhost/children/")));
+        String childId = getNewChildFromParentId(parentId);
+        System.out.println("Child Id: " + childId);
+        byte[] image = Files.readAllBytes(ResourceUtils.getFile("classpath:images/happy_child.jpg").toPath());
+        MockMultipartFile multipartFile =
+                new MockMultipartFile("child_picture","happy_child.jpg","image/jpg", image);
+        System.out.println("Multipart: " + multipartFile.getContentType());
+        String path = "/children/"+ childId+ "/images";
+        System.out.println(path);
+        System.out.println(this.mockMvc.perform(
+                multipart(path).file(multipartFile)
+        ).andExpect(status().is4xxClientError())
+        .andReturn().getResponse().getContentLength());
     }
 
     private String getNewParentId() throws Exception {
@@ -77,6 +86,19 @@ public class ChildControllerTest {
                 this.mockMvc.perform(
                         post("/users")
                                 .content(toJson(new User(null, "getNewParentId", "parent@child.com"), converter))
+                                .contentType(JSON_CONTENT_TYPE)
+                                .accept(JSON_CONTENT_TYPE)
+                ).andExpect(status().isCreated())
+                        .andReturn().getResponse().getHeader("location");
+
+        return location.substring(location.lastIndexOf("/") + 1);
+    }
+
+    private String getNewChildFromParentId(String parentId) throws Exception {
+        String location =
+                this.mockMvc.perform(
+                        post("/children")
+                                .content(toJson(new Child("test child saved", Arrays.asList(parentId)), this.converter))
                                 .contentType(JSON_CONTENT_TYPE)
                                 .accept(JSON_CONTENT_TYPE)
                 ).andExpect(status().isCreated())
