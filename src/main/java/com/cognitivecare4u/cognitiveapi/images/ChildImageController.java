@@ -2,8 +2,6 @@ package com.cognitivecare4u.cognitiveapi.images;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,16 +24,14 @@ public class ChildImageController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ChildImage>> listImages(@PathVariable String childId) {
         List<ChildImage> images = childImageService.listImages(childId);
-        log.error("Images: {}", images.size());
         return ResponseEntity.ok(images);
     }
 
     @GetMapping("/{imageId}/file")
     @ResponseBody
-    public ResponseEntity<Resource> get(@PathVariable String childId, @PathVariable String imageId) {
-        Resource file = childImageService.getImage(imageId);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    public ResponseEntity<byte[]> get(@PathVariable String childId, @PathVariable String imageId) {
+        byte[] file = childImageService.getImage(childId, imageId);
+        return ResponseEntity.ok(file);
     }
 
     @PostMapping

@@ -1,11 +1,12 @@
 package com.cognitivecare4u.cognitiveapi.images;
 
+import com.cognitivecare4u.cognitiveapi.exceptions.NotFoundException;
 import com.cognitivecare4u.cognitiveapi.images.storage.ImageStorage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ChildImageService {
@@ -20,8 +21,12 @@ public class ChildImageService {
         return childImageRepository.findAllByChildId(childId);
     }
 
-    public Resource getImage(String imageId) {
-        return null;
+    public byte[] getImage(String childId, String imageId) {
+        Optional<ChildImage> childImage = childImageRepository.findByIdAndChildId(imageId, childId);
+        if (!childImage.isPresent()) {
+            throw new NotFoundException();
+        }
+        return imageStorage.getImage(childImage.get());
     }
 
     public ChildImage saveImage(String childId, ChildImage childImage) {

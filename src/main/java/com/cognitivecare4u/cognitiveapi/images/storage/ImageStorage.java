@@ -6,4 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface ImageStorage {
     String addImage(ChildImage childImage);
+
+    byte[] getImage(ChildImage childImage);
 }
