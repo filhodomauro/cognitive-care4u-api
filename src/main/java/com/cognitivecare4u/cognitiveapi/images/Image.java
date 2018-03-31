@@ -1,5 +1,6 @@
 package com.cognitivecare4u.cognitiveapi.images;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,10 @@ public class Image {
     private String id;
 
     @ReadOnlyProperty
-    MultipartFile file;
+    private MultipartFile file;
+
+    @JsonIgnore
+    private String originalPath;
 
     public Image(MultipartFile file) {
         this.file = file;
