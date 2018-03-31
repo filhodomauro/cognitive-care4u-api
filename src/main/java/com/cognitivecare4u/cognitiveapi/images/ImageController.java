@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @Slf4j
 @Controller
@@ -28,9 +31,14 @@ public class ImageController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void handleFileUpload(@PathVariable String childId, @RequestParam("file") MultipartFile file) {
-        log.error("Child id {}", childId);
-        log.error("Multipart file {}", file.getName());
-        imageService.saveImage(childId, file);
+    public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable String childId) {
+        Image image = new Image(file);
+        image = imageService.saveImage(childId, image);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(image.getId()).toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }

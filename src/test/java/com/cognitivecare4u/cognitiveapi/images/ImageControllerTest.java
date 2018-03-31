@@ -24,9 +24,11 @@ import java.util.Arrays;
 import static com.cognitivecare4u.cognitiveapi.TestHelper.JSON_CONTENT_TYPE;
 import static com.cognitivecare4u.cognitiveapi.TestHelper.findConverter;
 import static com.cognitivecare4u.cognitiveapi.TestHelper.toJson;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -68,17 +70,15 @@ public class ImageControllerTest {
     public void testThatAnImageIsUpload() throws Exception {
         String parentId = getNewParentId();
         String childId = getNewChildFromParentId(parentId);
-        System.out.println("Child Id: " + childId);
         byte[] image = Files.readAllBytes(ResourceUtils.getFile("classpath:images/happy_child.jpg").toPath());
         MockMultipartFile multipartFile =
-                new MockMultipartFile("child_picture","happy_child.jpg","image/jpg", image);
-        System.out.println("Multipart: " + multipartFile.getContentType());
+                new MockMultipartFile("file", image);
         String path = "/children/"+ childId+ "/images";
-        System.out.println(path);
-        System.out.println(this.mockMvc.perform(
+        this.mockMvc.perform(
                 multipart(path).file(multipartFile)
-        ).andExpect(status().is4xxClientError())
-        .andReturn().getResponse().getContentLength());
+        ).andExpect(status().isCreated())
+        .andExpect(header().exists("location"))
+        .andExpect(header().string("location", startsWith("http://localhost" + path)));;
     }
 
     private String getNewParentId() throws Exception {
