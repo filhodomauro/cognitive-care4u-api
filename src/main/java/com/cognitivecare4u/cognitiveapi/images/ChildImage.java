@@ -1,5 +1,6 @@
 package com.cognitivecare4u.cognitiveapi.images;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class ChildImage implements Serializable {
 
     private String childId;
 
+    @JsonIgnore
     @ReadOnlyProperty
     private MultipartFile file;
 

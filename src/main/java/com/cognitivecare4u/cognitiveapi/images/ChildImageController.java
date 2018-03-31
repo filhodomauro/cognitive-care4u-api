@@ -30,9 +30,9 @@ public class ChildImageController {
         return ResponseEntity.ok(images);
     }
 
-    @GetMapping("/{imageId}")
+    @GetMapping("/{imageId}/file")
     @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable String childId, @PathVariable String imageId) {
+    public ResponseEntity<Resource> get(@PathVariable String childId, @PathVariable String imageId) {
         Resource file = childImageService.getImage(imageId);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
