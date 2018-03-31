@@ -24,11 +24,13 @@ import java.util.Arrays;
 import static com.cognitivecare4u.cognitiveapi.TestHelper.JSON_CONTENT_TYPE;
 import static com.cognitivecare4u.cognitiveapi.TestHelper.findConverter;
 import static com.cognitivecare4u.cognitiveapi.TestHelper.toJson;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -79,6 +81,31 @@ public class ChildChildImageControllerTest {
         ).andExpect(status().isCreated())
         .andExpect(header().exists("location"))
         .andExpect(header().string("location", startsWith("http://localhost" + path)));;
+    }
+
+    @Test
+    public void testCountImagesFromChild() throws Exception {
+        String parentId = getNewParentId();
+        String childId = getNewChildFromParentId(parentId);
+        byte[] image = Files.readAllBytes(ResourceUtils.getFile("classpath:images/happy_child.jpg").toPath());
+        MockMultipartFile multipartFile =
+                new MockMultipartFile("file", image);
+        String path = "/children/"+ childId+ "/images";
+        this.mockMvc.perform(
+                multipart(path).file(multipartFile)
+        ).andExpect(status().isCreated());
+
+        this.mockMvc.perform(
+                multipart(path).file(multipartFile)
+        ).andExpect(status().isCreated());
+
+        System.out.println("get images");
+        System.out.println(this.mockMvc.perform(
+                get(path).accept(JSON_CONTENT_TYPE)
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+        .andReturn().getResponse().getContentAsString());
     }
 
     private String getNewParentId() throws Exception {

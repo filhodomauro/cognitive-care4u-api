@@ -7,10 +7,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChildImage {
+public class ChildImage implements Serializable {
 
     @Id
     private String id;

@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -20,6 +21,14 @@ public class ChildImageController {
 
     @Autowired
     private ChildImageService childImageService;
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<ChildImage>> listImages(@PathVariable String childId) {
+        List<ChildImage> images = childImageService.listImages(childId);
+        log.error("Images: {}", images.size());
+        return ResponseEntity.ok(images);
+    }
 
     @GetMapping("/{imageId}")
     @ResponseBody

@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ChildImageService {
 
@@ -13,6 +15,10 @@ public class ChildImageService {
 
     @Autowired
     private ImageStorage imageStorage;
+
+    public List<ChildImage> listImages(String childId) {
+        return childImageRepository.findAllByChildId(childId);
+    }
 
     public Resource getImage(String imageId) {
         return null;
