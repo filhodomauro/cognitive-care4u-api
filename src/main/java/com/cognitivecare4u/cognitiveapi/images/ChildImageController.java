@@ -16,15 +16,15 @@ import java.net.URI;
 @Slf4j
 @Controller
 @RequestMapping("/children/{childId}/images")
-public class ImageController {
+public class ChildImageController {
 
     @Autowired
-    private ImageService imageService;
+    private ChildImageService childImageService;
 
     @GetMapping("/{imageId}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String childId, @PathVariable String imageId) {
-        Resource file = imageService.getImage(imageId);
+        Resource file = childImageService.getImage(imageId);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
@@ -32,12 +32,12 @@ public class ImageController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable String childId) {
-        Image image = new Image(file);
-        image = imageService.saveImage(childId, image);
+        ChildImage childImage = new ChildImage(file);
+        childImage = childImageService.saveImage(childId, childImage);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(image.getId()).toUri();
+                .buildAndExpand(childImage.getId()).toUri();
 
         return ResponseEntity.created(location).build();
     }

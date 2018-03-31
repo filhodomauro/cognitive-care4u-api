@@ -6,10 +6,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ImageService {
+public class ChildImageService {
 
     @Autowired
-    private ImageRepository imageRepository;
+    private ChildImageRepository childImageRepository;
 
     @Autowired
     private ImageStorage imageStorage;
@@ -18,10 +18,10 @@ public class ImageService {
         return null;
     }
 
-    public Image saveImage(String childId, Image image) {
-        String path = imageStorage.addImage(image);
-        image.setChildId(childId);
-        image.setOriginalPath(path);
-        return imageRepository.save(image);
+    public ChildImage saveImage(String childId, ChildImage childImage) {
+        String path = imageStorage.addImage(childImage);
+        childImage.setChildId(childId);
+        childImage.setOriginalPath(path);
+        return childImageRepository.save(childImage);
     }
 }

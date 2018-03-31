@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Image {
+public class ChildImage {
 
     @Id
     private String id;
@@ -22,7 +22,7 @@ public class Image {
 
     private String originalPath;
 
-    public Image(MultipartFile file) {
+    public ChildImage(MultipartFile file) {
         this.file = file;
     }
 }

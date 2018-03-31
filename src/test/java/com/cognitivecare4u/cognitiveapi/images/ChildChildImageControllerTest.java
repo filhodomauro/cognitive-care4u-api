@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CognitiveApiApplication.class)
 @WebAppConfiguration
-public class ImageControllerTest {
+public class ChildChildImageControllerTest {
 
     private MockMvc mockMvc;
 

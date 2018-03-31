@@ -1,9 +1,9 @@
 package com.cognitivecare4u.cognitiveapi.images.storage;
 
-import com.cognitivecare4u.cognitiveapi.images.Image;
+import com.cognitivecare4u.cognitiveapi.images.ChildImage;
 import org.springframework.stereotype.Component;
 
 @Component
 public interface ImageStorage {
-    String addImage(Image image);
+    String addImage(ChildImage childImage);
 }
