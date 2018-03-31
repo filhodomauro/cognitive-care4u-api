@@ -12,10 +12,12 @@ import java.util.Map;
 
 public class CloudinaryImageStorage implements ImageStorage {
 
-    private RestTemplate restTemplate;
+    private final Cloudinary CLOUDINARY;
+    private final RestTemplate restTemplate;
 
-    public CloudinaryImageStorage() {
-        restTemplate = new RestTemplateBuilder().build();
+    private CloudinaryImageStorage(Cloudinary cloudinary) {
+        this.restTemplate = new RestTemplateBuilder().build();
+        this.CLOUDINARY = cloudinary;
     }
 
     @SuppressWarnings("unchecked")
@@ -24,10 +26,9 @@ public class CloudinaryImageStorage implements ImageStorage {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("type", "upload");
         String url;
-        Cloudinary cloudinary = new Cloudinary();
         try {
             byte[] file = childImage.getFile().getBytes();
-            Map<String, String>response = cloudinary.uploader().upload(file, parameters);
+            Map<String, String>response = CLOUDINARY.uploader().upload(file, parameters);
             url = response.get("url");
         } catch (IOException e) {
             throw new UnprocessableEntityException("Invalid image");
@@ -38,5 +39,9 @@ public class CloudinaryImageStorage implements ImageStorage {
     @Override
     public byte[] getImage(ChildImage childImage) {
         return restTemplate.getForObject(childImage.getOriginalPath(), byte[].class);
+    }
+
+    public static ImageStorage getInstance(String cloudinaryUrl) {
+        return new CloudinaryImageStorage(new Cloudinary(cloudinaryUrl));
     }
 }
