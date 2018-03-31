@@ -14,9 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 public class Child {
 
-    public Child(@NotBlank String name, @NotEmpty List<String> parentUsersId) {
+    public Child(@NotBlank String name, @NotEmpty List<String> parentUsersIds) {
         this.name = name;
-        this.parentUsersId = parentUsersId;
+        this.parentUsersIds = parentUsersIds;
     }
 
     @Id
@@ -26,7 +26,7 @@ public class Child {
     private String name;
 
     @NotEmpty
-    private List<String> parentUsersId;
+    private List<String> parentUsersIds;
 
     private List<String> images;
 }

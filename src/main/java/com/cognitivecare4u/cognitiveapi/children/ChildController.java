@@ -43,7 +43,7 @@ public class ChildController {
             throw new UnprocessableEntityException("Error to save child", bindingResult.getFieldErrors());
         }
 
-        child.getParentUsersId().forEach(parentUserId -> {
+        child.getParentUsersIds().forEach(parentUserId -> {
             if (!isValidParentUser(parentUserId)) {
                 throw new UnprocessableEntityException("Error to save child", FieldError.of("parentUserId", "invalid parent user id"));
             }
