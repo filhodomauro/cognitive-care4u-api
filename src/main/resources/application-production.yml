@@ -3,5 +3,8 @@ spring:
     mongodb:
       uri: ${MONGODB_URI}
 logging:
-    level:
-        ROOT: ERROR
+  level:
+    ROOT: ERROR
+care4u:
+  images:
+    storage: ${CLOUDINARY_URL}
