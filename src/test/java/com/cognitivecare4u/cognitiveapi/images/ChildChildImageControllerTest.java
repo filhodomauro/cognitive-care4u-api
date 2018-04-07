@@ -3,6 +3,7 @@ package com.cognitivecare4u.cognitiveapi.images;
 import com.cognitivecare4u.cognitiveapi.CognitiveApiApplication;
 import com.cognitivecare4u.cognitiveapi.children.Child;
 import com.cognitivecare4u.cognitiveapi.children.ChildRepository;
+import com.cognitivecare4u.cognitiveapi.images.cognitive.CognitiveService;
 import com.cognitivecare4u.cognitiveapi.users.User;
 import com.cognitivecare4u.cognitiveapi.users.UserRepository;
 import org.junit.Before;
@@ -50,6 +51,9 @@ public class ChildChildImageControllerTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CognitiveService cognitiveService;
 
     @Before
     public void setup(){
@@ -115,6 +119,11 @@ public class ChildChildImageControllerTest {
         this.mockMvc.perform(
                 get(path + "/" + firstImage + "/file")
         ).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testWatson() {
+        cognitiveService.listClassifiers();
     }
 
     private String getNewParentId() throws Exception {
