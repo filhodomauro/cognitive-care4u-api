@@ -1,6 +1,6 @@
 package com.cognitivecare4u.cognitiveapi.visual_cognition;
 
-import com.cognitivecare4u.cognitiveapi.images.ChildImageService;
+import com.cognitivecare4u.cognitiveapi.children.images.ChildImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

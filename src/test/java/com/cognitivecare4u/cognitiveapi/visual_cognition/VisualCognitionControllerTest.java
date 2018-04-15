@@ -3,10 +3,10 @@ package com.cognitivecare4u.cognitiveapi.visual_cognition;
 import com.cognitivecare4u.cognitiveapi.CognitiveApiApplication;
 import com.cognitivecare4u.cognitiveapi.children.Child;
 import com.cognitivecare4u.cognitiveapi.children.ChildRepository;
-import com.cognitivecare4u.cognitiveapi.images.ChildImage;
-import com.cognitivecare4u.cognitiveapi.images.ChildImageRepository;
-import com.cognitivecare4u.cognitiveapi.images.cognitive.CognitiveService;
-import com.cognitivecare4u.cognitiveapi.images.storage.ImageStorage;
+import com.cognitivecare4u.cognitiveapi.children.images.ChildImage;
+import com.cognitivecare4u.cognitiveapi.children.images.ChildImageRepository;
+import com.cognitivecare4u.cognitiveapi.children.images.cognitive.CognitiveService;
+import com.cognitivecare4u.cognitiveapi.children.images.storage.ImageStorage;
 import com.cognitivecare4u.cognitiveapi.users.User;
 import com.cognitivecare4u.cognitiveapi.users.UserRepository;
 import org.junit.Before;
@@ -27,7 +27,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
-import java.util.Optional;
 
 import static com.cognitivecare4u.cognitiveapi.TestHelper.JSON_CONTENT_TYPE;
 import static com.cognitivecare4u.cognitiveapi.TestHelper.findConverter;
@@ -37,7 +36,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -94,8 +92,9 @@ public class VisualCognitionControllerTest {
         byte[] image = Files.readAllBytes(ResourceUtils.getFile("classpath:images/happy_child.jpg").toPath());
         ClassificationResult classificationResult = getClassificationResult();
 
-        when(imageStorage.getImage(ArgumentMatchers.any(ChildImage.class))).then(invocation -> image);
-        when(cognitiveService.classify(ArgumentMatchers.any(ByteArrayInputStream.class)))
+        when(imageStorage.getImage("http://localhost:7777/images/image_id_valid"))
+                .then(invocation -> new ByteArrayInputStream(image));
+        when(cognitiveService.classify(ArgumentMatchers.any(InputStream.class)))
                 .then(invocation -> classificationResult );
         this.mockMvc.perform(
                 post("/visual-cognition/classify")
@@ -109,7 +108,7 @@ public class VisualCognitionControllerTest {
     private ChildImage createChildImage() {
         Child child = createChild();
         ChildImage childImage =
-                new ChildImage("image_id_valid", child.getId(), null, null, null );
+                new ChildImage("image_id_valid", child.getId(), null, "http://localhost:7777/images/image_id_valid", null );
         return childImageRepository.save(childImage);
     }
 
@@ -125,7 +124,7 @@ public class VisualCognitionControllerTest {
     }
 
     private ClassificationResult getClassificationResult() {
-        ClassifierClass classifierClass = new ClassifierClass("happy", 0.9);
+        ClassifierClass classifierClass = new ClassifierClass("happy", 0.9f);
         ClassificationResult classificationResult =
                 new ClassificationResult(
                         "classifier_id",

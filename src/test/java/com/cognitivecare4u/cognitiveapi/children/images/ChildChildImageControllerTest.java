@@ -1,9 +1,9 @@
-package com.cognitivecare4u.cognitiveapi.images;
+package com.cognitivecare4u.cognitiveapi.children.images;
 
 import com.cognitivecare4u.cognitiveapi.CognitiveApiApplication;
 import com.cognitivecare4u.cognitiveapi.children.Child;
 import com.cognitivecare4u.cognitiveapi.children.ChildRepository;
-import com.cognitivecare4u.cognitiveapi.images.cognitive.CognitiveService;
+import com.cognitivecare4u.cognitiveapi.children.images.cognitive.CognitiveService;
 import com.cognitivecare4u.cognitiveapi.users.User;
 import com.cognitivecare4u.cognitiveapi.users.UserRepository;
 import org.junit.Before;

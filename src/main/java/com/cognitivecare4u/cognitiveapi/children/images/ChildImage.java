@@ -1,4 +1,4 @@
-package com.cognitivecare4u.cognitiveapi.images;
+package com.cognitivecare4u.cognitiveapi.children.images;
 
 import com.cognitivecare4u.cognitiveapi.visual_cognition.ClassifierClass;
 import com.fasterxml.jackson.annotation.JsonIgnore;

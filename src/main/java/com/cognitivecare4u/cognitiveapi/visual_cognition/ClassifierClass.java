@@ -11,5 +11,5 @@ public class ClassifierClass {
 
     private String name;
 
-    private double score;
+    private float score;
 }

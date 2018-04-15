@@ -1,4 +1,4 @@
-package com.cognitivecare4u.cognitiveapi.images.cognitive;
+package com.cognitivecare4u.cognitiveapi.children.images.cognitive;
 
 import com.cognitivecare4u.cognitiveapi.visual_cognition.ClassificationResult;
 import org.springframework.stereotype.Component;

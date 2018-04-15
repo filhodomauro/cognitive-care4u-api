@@ -1,8 +1,8 @@
 package com.cognitivecare4u.cognitiveapi;
 
-import com.cognitivecare4u.cognitiveapi.images.storage.CloudinaryImageStorage;
-import com.cognitivecare4u.cognitiveapi.images.storage.ImageStorage;
-import com.cognitivecare4u.cognitiveapi.images.storage.MockImageStorage;
+import com.cognitivecare4u.cognitiveapi.children.images.storage.CloudinaryImageStorage;
+import com.cognitivecare4u.cognitiveapi.children.images.storage.ImageStorage;
+import com.cognitivecare4u.cognitiveapi.children.images.storage.MockImageStorage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

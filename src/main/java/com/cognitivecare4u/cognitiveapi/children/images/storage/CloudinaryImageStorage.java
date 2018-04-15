@@ -1,12 +1,12 @@
-package com.cognitivecare4u.cognitiveapi.images.storage;
+package com.cognitivecare4u.cognitiveapi.children.images.storage;
 
 import com.cloudinary.Cloudinary;
 import com.cognitivecare4u.cognitiveapi.exceptions.UnprocessableEntityException;
-import com.cognitivecare4u.cognitiveapi.images.ChildImage;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,13 +22,12 @@ public class CloudinaryImageStorage implements ImageStorage {
 
     @SuppressWarnings("unchecked")
     @Override
-    public String addImage(ChildImage childImage) {
+    public String addImage(InputStream inputStream) {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("type", "upload");
         String url;
         try {
-            byte[] file = childImage.getFile().getBytes();
-            Map<String, String>response = CLOUDINARY.uploader().upload(file, parameters);
+            Map<String, String>response = CLOUDINARY.uploader().upload(inputStream, parameters);
             url = response.get("url");
         } catch (IOException e) {
             throw new UnprocessableEntityException("Invalid image");
@@ -37,8 +36,8 @@ public class CloudinaryImageStorage implements ImageStorage {
     }
 
     @Override
-    public byte[] getImage(ChildImage childImage) {
-        return restTemplate.getForObject(childImage.getOriginalPath(), byte[].class);
+    public InputStream getImage(String path) {
+        return restTemplate.getForObject(path, InputStream.class);
     }
 
     public static ImageStorage getInstance(String cloudinaryUrl) {
