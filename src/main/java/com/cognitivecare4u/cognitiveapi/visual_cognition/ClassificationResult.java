@@ -1,11 +1,14 @@
 package com.cognitivecare4u.cognitiveapi.visual_cognition;
 
-import com.cognitivecare4u.cognitiveapi.visual_cognition.ClassifierClass;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ClassificationResult {
 
     private String classifierId;

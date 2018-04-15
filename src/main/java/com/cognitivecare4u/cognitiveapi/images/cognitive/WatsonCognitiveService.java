@@ -1,20 +1,21 @@
 package com.cognitivecare4u.cognitiveapi.images.cognitive;
 
+import com.cognitivecare4u.cognitiveapi.visual_cognition.ClassificationResult;
 import com.ibm.watson.developer_cloud.http.ServiceCallback;
 import com.ibm.watson.developer_cloud.visual_recognition.v3.VisualRecognition;
 import com.ibm.watson.developer_cloud.visual_recognition.v3.model.Classifiers;
+import com.ibm.watson.developer_cloud.visual_recognition.v3.model.ClassifyOptions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 @Component
-//@Profile({"production", "development"})
 public class WatsonCognitiveService implements CognitiveService {
 
     @Value("${care4u.images.watson.api_key}")
@@ -52,6 +53,12 @@ public class WatsonCognitiveService implements CognitiveService {
         }
 
         classifiers.getClassifiers().forEach(classifier -> log.error(classifier.getName()));
+    }
+
+    @Override
+    public ClassificationResult classify(InputStream image) {
+        this.service.classify();
+        return null;
     }
 
 }

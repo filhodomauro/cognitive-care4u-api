@@ -7,5 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Message {
 
+    private String childId;
+
     private String imageId;
 }
