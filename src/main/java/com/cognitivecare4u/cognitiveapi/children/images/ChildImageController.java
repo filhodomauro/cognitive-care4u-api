@@ -1,5 +1,6 @@
-package com.cognitivecare4u.cognitiveapi.images;
+package com.cognitivecare4u.cognitiveapi.children.images;
 
+import com.cognitivecare4u.cognitiveapi.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
 
@@ -30,7 +33,15 @@ public class ChildImageController {
     @GetMapping("/{imageId}/file")
     @ResponseBody
     public ResponseEntity<byte[]> get(@PathVariable String childId, @PathVariable String imageId) {
-        byte[] file = childImageService.getImage(childId, imageId);
+        InputStream inputStream = childImageService.getImage(childId, imageId);
+        byte[] file = new byte[0];
+        try {
+            file = new byte[inputStream.available()];
+            inputStream.read(file);
+        } catch (IOException e) {
+            log.error("Error to get image", e);
+            throw new NotFoundException();
+        }
         return ResponseEntity.ok(file);
     }
 

@@ -1,5 +1,6 @@
-package com.cognitivecare4u.cognitiveapi.images;
+package com.cognitivecare4u.cognitiveapi.children.images;
 
+import com.cognitivecare4u.cognitiveapi.children.images.ChildImage;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
