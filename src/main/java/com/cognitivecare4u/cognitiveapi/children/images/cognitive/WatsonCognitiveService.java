@@ -43,7 +43,9 @@ public class WatsonCognitiveService implements CognitiveService {
         this.service.listClassifiers().enqueue(new ServiceCallback<Classifiers>() {
             @Override
             public void onResponse(Classifiers response) {
-                response.getClassifiers().forEach(classifier -> log.error(classifier.getName()));
+                response.getClassifiers().forEach(classifier -> {
+                    log.error("Classifier {} id -> {}",classifier.getName(), classifier.getClassifierId());
+                });
             }
 
             @Override
@@ -66,30 +68,23 @@ public class WatsonCognitiveService implements CognitiveService {
         result.setClasses(new ArrayList<>());
         ClassifyOptions options = new ClassifyOptions.Builder()
                 .imagesFile(image)
-                .addClassifierId(this.classifierId)
+                .imagesFilename("image_name.jpg")
+                .classifierIds(Arrays.asList(this.classifierId))
+                //.owners(Arrays.asList("me"))
                 .build();
-        this.service.classify(options).enqueue(new ServiceCallback<ClassifiedImages>() {
-            @Override
-            public void onResponse(ClassifiedImages response) {
-                first(response.getImages()).ifPresent(classifiedImage -> {
-                    first(classifiedImage.getClassifiers()).ifPresent(classifierResult -> {
-                        classifierResult.getClasses().forEach(classResult -> {
-                            result.getClasses().add(
-                                    new ClassifierClass(
-                                            classResult.getClassName(),
-                                            classResult.getScore()
-                                    )
-                            );
-                        });
-                    });
-                });
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        });
+        ClassifiedImages classifiedImages = this.service.classify(options).execute();
+        first(classifiedImages.getImages()).ifPresent(classifiedImage ->
+            first(classifiedImage.getClassifiers()).ifPresent(classifierResult ->
+                classifierResult.getClasses().forEach(classResult ->
+                    result.getClasses().add(
+                            new ClassifierClass(
+                                    classResult.getClassName(),
+                                    classResult.getScore()
+                            )
+                    )
+                )
+            )
+        );
         result.setHighestScore(
                 Collections.max(result.getClasses(), (o1, o2) -> Float.compare(o1.getScore(), o2.getScore()))
         );
