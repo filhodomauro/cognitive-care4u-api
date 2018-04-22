@@ -8,3 +8,8 @@ care4u:
       api_key: aad20b86e2149bb533e2983faaba16a297d33b83
       version: 2016-05-20
       classifier_id: DefaultCustomModel_998904269
+  speeches:
+    watson:
+      username: c1da3f38-560f-4526-9dcf-ec35808a61af
+      password: utTcXCBrQm1y
+      language_model: pt-BR_BroadbandModel
