@@ -11,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -29,5 +30,12 @@ public class ChildSpeechController {
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(childSpeech.getId()).toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<ChildSpeech>> list(@PathVariable String childId) {
+        List<ChildSpeech> speeches = childSpeechService.list(childId);
+        return ResponseEntity.ok(speeches);
     }
 }
