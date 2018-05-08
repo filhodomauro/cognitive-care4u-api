@@ -13,3 +13,18 @@ care4u:
       username: c1da3f38-560f-4526-9dcf-ec35808a61af
       password: utTcXCBrQm1y
       language_model: pt-BR_BroadbandModel
+      tone:
+        version: 2017-09-21
+        username: a1dec3d4-56d8-416e-a4a1-8ea450b16812
+        password: dzzuW3g6nYo7
+  natural_language_understand:
+    watson:
+      version: 2018-03-16
+      username: 040c877c-f242-4569-9d18-5b02b10e0758
+      password: zYDH5p2OdN8d
+      sexual_categories: '/society/sex,society/crime/sexual/offense/paedophilia'
+      profanity_categories: ''
+  language_translate:
+    watson:
+      username: d066b656-165b-4e48-9fde-a884a8ce6ab3
+      password: OMtUZKMtGRB2

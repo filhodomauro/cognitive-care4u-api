@@ -39,7 +39,7 @@ public class WatsonSpeechToText implements CognitiveSpeechToText {
                 .build();
         SpeechRecognitionResults results = this.speechToText.recognize(options).execute();
 
-        log.info("Speech To Text: {}",results);
+        log.debug("Speech To Text: {}",results);
 
         if (results.getResults() != null) {
             results.getResults().forEach(result -> {
