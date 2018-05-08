@@ -2,7 +2,7 @@ package com.cognitivecare4u.cognitiveapi.children.images;
 
 import com.cognitivecare4u.cognitiveapi.exceptions.NotFoundException;
 import com.cognitivecare4u.cognitiveapi.exceptions.UnprocessableEntityException;
-import com.cognitivecare4u.cognitiveapi.children.images.cognitive.CognitiveService;
+import com.cognitivecare4u.cognitiveapi.children.images.cognitive.VisualCognitiveService;
 import com.cognitivecare4u.cognitiveapi.children.images.storage.ImageStorage;
 import com.cognitivecare4u.cognitiveapi.visual_cognition.ClassificationResult;
 import com.cognitivecare4u.cognitiveapi.visual_cognition.ClassifierClass;
@@ -26,11 +26,11 @@ public class ChildImageService {
     private ImageStorage imageStorage;
 
     @Autowired
-    private CognitiveService cognitiveService;
+    private VisualCognitiveService visualCognitiveService;
 
     public ClassificationResult classify(final String childId, final String imageId) {
         InputStream image = getImage(childId, imageId);
-        ClassificationResult result = cognitiveService.classify(image);
+        ClassificationResult result = visualCognitiveService.classify(image);
         Optional.of(result.getHighestScore()).ifPresent(classifierClass -> updateImage(imageId, classifierClass));
         return result;
     }

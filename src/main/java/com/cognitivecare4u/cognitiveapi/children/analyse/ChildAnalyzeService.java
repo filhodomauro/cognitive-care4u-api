@@ -1,7 +1,7 @@
 package com.cognitivecare4u.cognitiveapi.children.analyse;
 
+import com.cognitivecare4u.cognitiveapi.children.images.cognitive.VisualCognitiveService;
 import com.cognitivecare4u.cognitiveapi.exceptions.AnalyzeException;
-import com.cognitivecare4u.cognitiveapi.exceptions.UnprocessableEntityException;
 import com.cognitivecare4u.cognitiveapi.speeches.SpeechService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,17 @@ public class ChildAnalyzeService {
     @Autowired
     private SpeechService speechService;
 
+    @Autowired
+    private VisualCognitiveService visualCognitiveService;
+
     public ChildAnalyze imageAnalyse(ChildAnalyzeRequest analyseRequest) {
-        return null;
+        try {
+            InputStream image = readFromResource(analyseRequest.getResourcePath());
+            return visualCognitiveService.analyze(image);
+        } catch (IOException e) {
+            log.error("Error to read image resource", e);
+            throw new AnalyzeException("Error to read image resource", e);
+        }
     }
 
     public ChildAnalyze speechAnalyse(ChildAnalyzeRequest analyseRequest) {

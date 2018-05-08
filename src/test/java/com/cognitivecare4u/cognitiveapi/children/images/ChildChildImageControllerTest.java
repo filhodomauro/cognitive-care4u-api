@@ -3,7 +3,7 @@ package com.cognitivecare4u.cognitiveapi.children.images;
 import com.cognitivecare4u.cognitiveapi.CognitiveApiApplication;
 import com.cognitivecare4u.cognitiveapi.children.Child;
 import com.cognitivecare4u.cognitiveapi.children.ChildRepository;
-import com.cognitivecare4u.cognitiveapi.children.images.cognitive.CognitiveService;
+import com.cognitivecare4u.cognitiveapi.children.images.cognitive.VisualCognitiveService;
 import com.cognitivecare4u.cognitiveapi.users.User;
 import com.cognitivecare4u.cognitiveapi.users.UserRepository;
 import org.junit.Before;
@@ -53,7 +53,7 @@ public class ChildChildImageControllerTest {
     private UserRepository userRepository;
 
     @Autowired
-    private CognitiveService cognitiveService;
+    private VisualCognitiveService visualCognitiveService;
 
     @Before
     public void setup(){
@@ -123,7 +123,7 @@ public class ChildChildImageControllerTest {
 
     @Test
     public void testWatson() {
-        cognitiveService.listClassifiers();
+        visualCognitiveService.listClassifiers();
     }
 
     private String getNewParentId() throws Exception {

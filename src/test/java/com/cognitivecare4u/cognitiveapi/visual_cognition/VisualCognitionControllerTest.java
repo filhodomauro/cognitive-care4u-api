@@ -5,7 +5,7 @@ import com.cognitivecare4u.cognitiveapi.children.Child;
 import com.cognitivecare4u.cognitiveapi.children.ChildRepository;
 import com.cognitivecare4u.cognitiveapi.children.images.ChildImage;
 import com.cognitivecare4u.cognitiveapi.children.images.ChildImageRepository;
-import com.cognitivecare4u.cognitiveapi.children.images.cognitive.CognitiveService;
+import com.cognitivecare4u.cognitiveapi.children.images.cognitive.VisualCognitiveService;
 import com.cognitivecare4u.cognitiveapi.children.images.storage.ImageStorage;
 import com.cognitivecare4u.cognitiveapi.users.User;
 import com.cognitivecare4u.cognitiveapi.users.UserRepository;
@@ -62,7 +62,7 @@ public class VisualCognitionControllerTest {
     private ChildImageRepository childImageRepository;
 
     @MockBean
-    private CognitiveService cognitiveService;
+    private VisualCognitiveService visualCognitiveService;
 
     @MockBean
     private ImageStorage imageStorage;
@@ -94,7 +94,7 @@ public class VisualCognitionControllerTest {
 
         when(imageStorage.getImage("http://localhost:7777/images/image_id_valid"))
                 .then(invocation -> new ByteArrayInputStream(image));
-        when(cognitiveService.classify(ArgumentMatchers.any(InputStream.class)))
+        when(visualCognitiveService.classify(ArgumentMatchers.any(InputStream.class)))
                 .then(invocation -> classificationResult );
         this.mockMvc.perform(
                 post("/visual-cognition/classify")

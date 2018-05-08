@@ -1,5 +1,6 @@
 package com.cognitivecare4u.cognitiveapi.children.images.cognitive;
 
+import com.cognitivecare4u.cognitiveapi.children.analyse.ChildAnalyze;
 import com.cognitivecare4u.cognitiveapi.visual_cognition.ClassificationResult;
 import com.cognitivecare4u.cognitiveapi.visual_cognition.ClassifierClass;
 import com.ibm.watson.developer_cloud.http.ServiceCallback;
@@ -17,7 +18,10 @@ import java.util.*;
 
 @Slf4j
 @Component
-public class WatsonCognitiveService implements CognitiveService {
+public class WatsonVisualCognitiveService implements VisualCognitiveService {
+
+    private static final String HAPPY = "happy";
+    private static final String SAD = "sad";
 
     @Value("${care4u.images.watson.api_key}")
     private String apiKey;
@@ -73,6 +77,7 @@ public class WatsonCognitiveService implements CognitiveService {
                 //.owners(Arrays.asList("me"))
                 .build();
         ClassifiedImages classifiedImages = this.service.classify(options).execute();
+        log.info("Classified Image: {}", classifiedImages);
         first(classifiedImages.getImages()).ifPresent(classifiedImage ->
             first(classifiedImage.getClassifiers()).ifPresent(classifierResult ->
                 classifierResult.getClasses().forEach(classResult ->
@@ -89,6 +94,22 @@ public class WatsonCognitiveService implements CognitiveService {
                 Collections.max(result.getClasses(), (o1, o2) -> Float.compare(o1.getScore(), o2.getScore()))
         );
         return result;
+    }
+
+    @Override
+    public ChildAnalyze analyze(InputStream image) {
+        ClassificationResult classificationResult = classify(image);
+        ChildAnalyze childAnalyze = new ChildAnalyze();
+        Optional.of(classificationResult.getClasses()).ifPresent(classifierClasses -> {
+            classifierClasses.forEach(classifierClass -> {
+                if (HAPPY.equalsIgnoreCase(classifierClass.getName())) {
+                    childAnalyze.setHappy(classifierClass.getScore());
+                } else if (SAD.equalsIgnoreCase(classifierClass.getName())) {
+                    childAnalyze.setSad(classifierClass.getScore());
+                }
+            });
+        });
+        return childAnalyze;
     }
 
     private <T> Optional<T> first(List<T> collection) {
