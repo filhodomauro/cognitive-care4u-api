@@ -63,7 +63,7 @@ public class WatsonNaturalLanguage implements CognitiveNaturalLanguage {
         AnalysisResults analysisResults = this.naturalLanguage
                 .analyze(parameters)
                 .execute();
-        log.debug("NL: {}", analysisResults);
+        log.info("NL: {}", analysisResults);
 
         ChildAnalyze childAnalyze = new ChildAnalyze();
 
