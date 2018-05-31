@@ -43,13 +43,7 @@ public class SpeechService {
 
     public Analyze analyse(InputStream speech, String contentType) {
         String text = cognitiveSpeechToText.transform(speech, contentType);
-
         log.info("Texto: {}", text);
-
-        String translated = this.languageTranslator.translate(text);
-
-        log.info("Translated text: {}", translated);
-
-        return naturalLanguage.analyze(translated);
+        return naturalLanguage.analyze(text);
     }
 }
