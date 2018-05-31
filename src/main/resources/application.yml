@@ -3,7 +3,6 @@ logging:
         ROOT: INFO
 care4u:
   images:
-    storage: none
     watson:
       api_key: aad20b86e2149bb533e2983faaba16a297d33b83
       version: 2016-05-20

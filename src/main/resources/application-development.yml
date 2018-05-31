@@ -1,5 +1,3 @@
-spring:
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/care-4u
-      database: care-4u
+logging:
+  level:
+    ROOT: DEBUG

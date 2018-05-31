@@ -1,6 +1,6 @@
 package com.cognitivecare4u.cognitiveapi.speeches;
 
-import com.cognitivecare4u.cognitiveapi.children.analyse.ChildAnalyze;
+import com.cognitivecare4u.cognitiveapi.analyzes.Analyze;
 import com.cognitivecare4u.cognitiveapi.speeches.cognitive.CognitiveLanguageTranslator;
 import com.cognitivecare4u.cognitiveapi.speeches.cognitive.CognitiveNaturalLanguage;
 import com.cognitivecare4u.cognitiveapi.speeches.cognitive.CognitiveSpeechToText;
@@ -41,7 +41,7 @@ public class SpeechService {
         return text;
     }
 
-    public ChildAnalyze analyse(InputStream speech, String contentType) {
+    public Analyze analyse(InputStream speech, String contentType) {
         String text = cognitiveSpeechToText.transform(speech, contentType);
 
         log.info("Texto: {}", text);
