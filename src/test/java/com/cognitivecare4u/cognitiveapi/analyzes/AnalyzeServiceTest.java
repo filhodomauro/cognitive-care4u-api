@@ -1,9 +1,6 @@
 package com.cognitivecare4u.cognitiveapi.analyzes;
 
 import com.cognitivecare4u.cognitiveapi.CognitiveApiApplication;
-import com.cognitivecare4u.cognitiveapi.analyzes.Analyze;
-import com.cognitivecare4u.cognitiveapi.analyzes.AnalyzeRequest;
-import com.cognitivecare4u.cognitiveapi.analyzes.AnalyzeService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
