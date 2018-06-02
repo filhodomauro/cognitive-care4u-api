@@ -27,3 +27,8 @@ care4u:
     watson:
       username: d066b656-165b-4e48-9fde-a884a8ce6ab3
       password: OMtUZKMtGRB2
+  natural_language_classifier_custom:
+    watson:
+      username: 0c203541-33de-4057-822f-1aa6296a6620
+      password: zg2dqm8vuEsI
+      classifier_id: 95c34fx406-nlc-522

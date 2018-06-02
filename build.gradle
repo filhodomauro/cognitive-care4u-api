@@ -26,7 +26,7 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('com.ibm.watson.developer_cloud:java-sdk:5.3.0')
+	compile('com.ibm.watson.developer_cloud:java-sdk:5.5.0')
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 
